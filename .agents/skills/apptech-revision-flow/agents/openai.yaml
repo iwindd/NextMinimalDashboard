@@ -1,0 +1,4 @@
+interface:
+  display_name: "AppTech Revision Flow"
+  short_description: "Trace News, Knowledge, and Learning revision workflows"
+  default_prompt: "Use $apptech-revision-flow to inspect or change this AppTech revision workflow across UI, server policy, and audit behavior."

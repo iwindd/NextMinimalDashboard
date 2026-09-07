@@ -1,0 +1,157 @@
+.iconSidebar {
+  width: 64px;
+  height: 100%;
+  border-right: 1px solid var(--nav-surface-border-color);
+  background-color: var(--nav-surface-bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.iconSidebarScroll {
+  width: 100%;
+  flex: 1;
+}
+
+.sidebarScrollContent {
+  min-height: 100%;
+}
+
+.iconSidebarItem {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: var(--nav-item-text-color);
+  text-decoration: none;
+  transition: all 150ms ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.iconSidebarChevron {
+  position: absolute;
+  right: 0.1875rem;
+  top: 50%;
+  transform: translate(25%, -50%);
+  opacity: 0.65;
+}
+
+.menuInfoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(
+    --nav-muted-text-color,
+    light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))
+  );
+}
+
+.badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.iconSidebarItem:hover:not([data-active="true"]):not([data-disabled]),
+.iconSidebarItem[data-expanded="true"]:not([data-active="true"]):not(
+    [data-disabled]
+  ),
+.iconSidebarItem[aria-expanded="true"]:not([data-active="true"]):not(
+    [data-disabled]
+  ) {
+  background-color: var(--nav-item-hover-bg-color);
+}
+
+.iconSidebarItem[data-active="true"] {
+  background-color: var(--nav-item-active-bg-color);
+  color: var(--nav-item-active-text-color);
+}
+
+.iconSidebarItem[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.horizontalMenuDropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+  overflow: visible !important;
+}
+
+.menuItemActive {
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-4)
+  );
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-weight: 600;
+}
+
+.horizontalMenuDropdown [data-expanded="true"],
+.horizontalMenuDropdown [aria-expanded="true"],
+.horizontalMenuDropdown :global(.mantine-Menu-item[data-expanded="true"]),
+.horizontalMenuDropdown :global(.mantine-Menu-item[aria-expanded="true"]) {
+  background-color: var(--mantine-color-gray-1) !important;
+  color: var(--mantine-color-black) !important;
+}
+
+[data-mantine-color-scheme="dark"] .horizontalMenuDropdown [data-expanded="true"],
+[data-mantine-color-scheme="dark"] .horizontalMenuDropdown [aria-expanded="true"],
+[data-mantine-color-scheme="dark"]
+  .horizontalMenuDropdown
+  :global(.mantine-Menu-item[data-expanded="true"]),
+[data-mantine-color-scheme="dark"]
+  .horizontalMenuDropdown
+  :global(.mantine-Menu-item[aria-expanded="true"]) {
+  background-color: var(--mantine-color-dark-7) !important;
+  color: var(--mantine-color-white) !important;
+}
+
+.navigationScrollbar {
+  padding: 2px;
+  background-color: transparent !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+.navigationScrollbar:hover,
+.navigationScrollbar:active,
+.navigationScrollbar::before {
+  background-color: transparent !important;
+}
+
+.navigationScrollbarVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navigationScrollbarThumb,
+.navigationScrollbarThumb:hover,
+.navigationScrollbarThumb:active {
+  border-radius: 999px;
+  background-color: color-mix(
+    in srgb,
+    var(--mantine-color-gray-5) 24%,
+    transparent
+  ) !important;
+  transition: none;
+}
+
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb,
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb:hover,
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb:active {
+  background-color: color-mix(
+    in srgb,
+    var(--mantine-color-gray-6) 26%,
+    transparent
+  ) !important;
+}

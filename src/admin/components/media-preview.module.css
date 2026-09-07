@@ -1,0 +1,33 @@
+/*
+ * Shared preview frame for admin image/file pickers. Mirrors `.imageBox` in
+ * home-hero-editor.module.css so every upload field looks identical: input
+ * border and background, no shadow.
+ */
+.previewBox {
+  display: grid;
+  min-height: var(--preview-box-min-height, 260px);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
+  padding: 16px;
+}
+
+.previewBoxError {
+  border-color: var(--mantine-color-error);
+}
+
+/* Same frame for a non-image field, where a full preview area is not needed. */
+.previewBoxCompact {
+  --preview-box-min-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-sm);
+}

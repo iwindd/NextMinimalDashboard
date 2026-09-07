@@ -1,0 +1,44 @@
+.titleLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.titleLink:hover {
+  text-decoration: underline;
+}
+
+.search {
+  min-width: 280px;
+}
+
+.tabsList {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+.tabsList > * {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.cover {
+  flex: 0 0 auto;
+}
+
+.coverPlaceholder {
+  display: flex;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  justify-content: center;
+  color: var(--mantine-color-gray-5);
+  background: var(--mantine-color-gray-1);
+  border-radius: var(--mantine-radius-sm);
+}
+
+@media (max-width: 48em) {
+  .search {
+    min-width: min(100%, 320px);
+  }
+}

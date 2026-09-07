@@ -1,0 +1,6 @@
+.source {
+  padding: var(--mantine-spacing-md);
+  border: 1px dashed
+    light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
+  border-radius: var(--mantine-radius-md);
+}

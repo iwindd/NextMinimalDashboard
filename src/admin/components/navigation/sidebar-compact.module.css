@@ -1,0 +1,164 @@
+.compactSidebar {
+  width: 90px;
+  height: 100%;
+  border-right: 1px solid var(--nav-surface-border-color);
+  background-color: var(--nav-surface-bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.iconSidebarScroll {
+  width: 100%;
+  flex: 1;
+}
+
+.sidebarScrollContent {
+  min-height: 100%;
+}
+
+.compactSidebarItem {
+  position: relative;
+  width: 74px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+  color: var(--nav-item-text-color);
+  text-decoration: none;
+  transition: all 150ms ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.compactItemMeta {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  max-width: calc(100% - 0.5rem);
+  justify-content: flex-end;
+}
+
+.compactInfoIcon,
+.menuInfoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nav-muted-text-color, var(--mantine-color-gray-6));
+}
+
+[data-mantine-color-scheme="dark"] .compactInfoIcon,
+[data-mantine-color-scheme="dark"] .menuInfoIcon {
+  color: var(--nav-muted-text-color, var(--mantine-color-dark-2));
+}
+
+.compactInfoIcon {
+  position: absolute;
+  left: 0.35rem;
+  top: 0%;
+  transform: translateY(50%);
+  width: 1rem;
+  height: 1rem;
+}
+
+.badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.compactSidebarItem:hover:not([data-active="true"]):not([data-disabled]),
+.compactSidebarItem[data-expanded="true"]:not([data-active="true"]):not(
+    [data-disabled]
+  ),
+.compactSidebarItem[aria-expanded="true"]:not([data-active="true"]):not(
+    [data-disabled]
+  ) {
+  background-color: var(--nav-item-hover-bg-color);
+}
+
+.compactSidebarItem[data-active="true"] {
+  background-color: var(--nav-item-active-bg-color);
+  color: var(--nav-item-active-text-color);
+}
+
+.compactSidebarItem[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.compactSidebarLabel {
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  width: 70%;
+}
+
+.compactSidebarItem[data-active="true"] .compactSidebarLabel {
+  font-weight: 600;
+}
+
+.horizontalMenuDropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+  overflow: visible !important;
+}
+
+.menuItemActive {
+  /* NOTE: the appShell variables can not use because portal */
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-4)
+  );
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-weight: 600;
+}
+
+.navigationScrollbar {
+  padding: 2px;
+  background-color: transparent !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+.navigationScrollbar:hover,
+.navigationScrollbar:active,
+.navigationScrollbar::before {
+  background-color: transparent !important;
+}
+
+.navigationScrollbarVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navigationScrollbarThumb,
+.navigationScrollbarThumb:hover,
+.navigationScrollbarThumb:active {
+  border-radius: 999px;
+  background-color: color-mix(
+    in srgb,
+    var(--mantine-color-gray-5) 24%,
+    transparent
+  ) !important;
+  transition: none;
+}
+
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb,
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb:hover,
+[data-mantine-color-scheme="dark"] .navigationScrollbarThumb:active {
+  background-color: color-mix(
+    in srgb,
+    var(--mantine-color-gray-6) 26%,
+    transparent
+  ) !important;
+}

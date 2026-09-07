@@ -1,0 +1,115 @@
+enum AuditAction {
+  USER_CREATED
+  USER_STATUS_CHANGED
+  USER_EMAIL_CHANGED
+  USER_NAME_CHANGED
+  USER_PASSWORD_RESET
+  USER_ROLE_CHANGED
+  PROFILE_NAME_CHANGED
+  PROFILE_EMAIL_CHANGED
+  PROFILE_PASSWORD_CHANGED
+  LOGIN_SUCCEEDED
+  LOGIN_FAILED
+  NEWS_CREATED
+  NEWS_UPDATED
+  NEWS_SUBMITTED
+  NEWS_CHANGES_REQUESTED
+  NEWS_PUBLISHED
+  NEWS_ARCHIVED
+  NEWS_DELETED
+  NEWS_RESTORED
+  NEWS_CATEGORY_CREATED
+  FILE_UPLOADED               @map("NEWS_MEDIA_UPLOADED")
+  FILE_DELETED
+  NEWS_MEDIA_ATTACHED
+  NEWS_MEDIA_DETACHED
+  AUDIT_LOG_EXPORTED
+}
+
+enum AuditResourceType {
+  USER
+  PROFILE
+  NEWS
+  NEWS_CATEGORY
+  FILE               @map("NEWS_MEDIA")
+  AUDIT_LOG
+}
+
+enum UserSecurityEvent {
+  ACCOUNT_CREATED
+  ACCOUNT_ENABLED
+  ACCOUNT_DISABLED
+  EMAIL_CHANGED_BY_ADMIN
+  EMAIL_CHANGED_BY_SELF
+  NAME_CHANGED_BY_ADMIN
+  NAME_CHANGED_BY_SELF
+  PASSWORD_RESET_BY_ADMIN
+  PASSWORD_CHANGED_BY_SELF
+  ROLE_CHANGED
+  LOGIN_SUCCEEDED
+  LOGIN_FAILED
+}
+
+enum UserSecuritySource {
+  ADMIN
+  SELF
+  SYSTEM
+}
+
+enum UserSecurityOutcome {
+  SUCCESS
+  FAILURE
+}
+
+model AuditLog {
+  id           String            @id @default(uuid())
+  actorUserId  String?
+  actorRole    UserRole?
+  action       AuditAction
+  resourceType AuditResourceType
+  resourceId   String?
+  targetUserId String?
+  before       Json?
+  after        Json?
+  metadata     Json?
+  reason       String?
+  requestId    String?
+  ipHash       String?
+  userAgent    String?
+  createdAt    DateTime          @default(now())
+
+  actorUser  User? @relation("AuditLogActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  targetUser User? @relation("AuditLogTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([targetUserId, createdAt])
+  @@index([resourceType, resourceId, createdAt])
+  @@index([resourceType, createdAt])
+  @@index([action, createdAt])
+}
+
+model UserSecurityLog {
+  id           String              @id @default(uuid())
+  actorUserId  String?
+  actorRole    UserRole?
+  targetUserId String?
+  event        UserSecurityEvent
+  source       UserSecuritySource
+  outcome      UserSecurityOutcome
+  reason       String?
+  metadata     Json?
+  requestId    String?
+  ipHash       String?
+  userAgent    String?
+  createdAt    DateTime            @default(now())
+
+  actorUser  User? @relation("SecurityLogActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  targetUser User? @relation("SecurityLogTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([targetUserId, createdAt])
+  @@index([event, createdAt])
+  @@index([outcome, createdAt])
+}

@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: simple-dashboard
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d simple-dashboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/simple-dashboard?schema=public"
+      # Local-only default. Replace with a strong random value for anything
+      # beyond local development.
+      AUTH_SECRET: "local-docker-dev-secret-change-me"
+      FILE_MANAGER_STORAGE: "local"
+      FILE_MANAGER_LOCAL_ROOT: ".data/files"
+      FILE_MANAGER_DELETE_ON_REMOVE: "true"
+    ports:
+      - "3006:3006"
+    volumes:
+      - app_uploads:/app/.data
+
+volumes:
+  db_data:
+  app_uploads:

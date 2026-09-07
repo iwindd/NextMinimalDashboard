@@ -1,0 +1,107 @@
+enum NewsRevisionStatus {
+  DRAFT
+  IN_REVIEW
+  CHANGES_REQUESTED
+  PUBLISHED
+  SUPERSEDED
+}
+
+enum NewsFilePurpose {
+  COVER
+  BODY
+}
+
+model News {
+  id                  String    @id @default(uuid())
+  authorId            String?
+  publishedRevisionId String?   @unique
+  workingRevisionId   String?   @unique
+  viewCount           Int       @default(0)
+  deletedAt           DateTime?
+  deletedById         String?
+  archivedAt          DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  author            User?             @relation("NewsAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  deletedBy         User?             @relation("NewsDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+  publishedRevision NewsRevision?     @relation("NewsPublishedRevision", fields: [publishedRevisionId], references: [id], onDelete: SetNull)
+  workingRevision   NewsRevision?     @relation("NewsWorkingRevision", fields: [workingRevisionId], references: [id], onDelete: SetNull)
+  revisions         NewsRevision[]    @relation("NewsRevisions")
+  viewSessions      NewsViewSession[]
+
+  @@index([authorId, updatedAt])
+  @@index([deletedAt, updatedAt])
+  @@index([archivedAt, updatedAt])
+  @@index([viewCount])
+}
+
+model NewsRevision {
+  id              String             @id @default(uuid())
+  newsId          String
+  version         Int
+  status          NewsRevisionStatus @default(DRAFT)
+  title           String
+  excerpt         String?
+  bodyHtml        String
+  categoryId      String?
+  readTimeMinutes Int?
+  source          Json?
+  createdById     String?
+  reviewedById    String?
+  reviewReason    String?
+  submittedAt     DateTime?
+  reviewedAt      DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  news         News               @relation("NewsRevisions", fields: [newsId], references: [id], onDelete: Cascade)
+  category     NewsCategory?      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdBy    User?              @relation("NewsRevisionCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  reviewedBy   User?              @relation("NewsRevisionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  publishedFor News?              @relation("NewsPublishedRevision")
+  workingFor   News?              @relation("NewsWorkingRevision")
+  files        NewsRevisionFile[]
+
+  @@unique([newsId, version])
+  @@index([status, updatedAt])
+  @@index([categoryId, status])
+}
+
+model NewsCategory {
+  id             String   @id @default(uuid())
+  name           String
+  normalizedName String   @unique
+  createdById    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  createdBy User?          @relation("NewsCategoryCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  revisions NewsRevision[]
+
+  @@index([name])
+}
+
+model NewsRevisionFile {
+  id         String          @id @default(uuid())
+  revisionId String
+  purpose    NewsFilePurpose
+
+  revision  NewsRevision   @relation(fields: [revisionId], references: [id], onDelete: Cascade)
+  reference FileReference?
+
+  @@index([revisionId, purpose])
+}
+
+model NewsViewSession {
+  id          String   @id @default(uuid())
+  newsId      String
+  sessionHash String
+  createdAt   DateTime @default(now())
+
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@unique([newsId, sessionHash])
+  @@index([newsId, createdAt])
+}

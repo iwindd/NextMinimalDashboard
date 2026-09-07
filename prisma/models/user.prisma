@@ -1,0 +1,27 @@
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         UserRole @default(EDITOR)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  auditLogsAsActor     AuditLog[]        @relation("AuditLogActor")
+  auditLogsAsTarget    AuditLog[]        @relation("AuditLogTarget")
+  securityLogsAsActor  UserSecurityLog[] @relation("SecurityLogActor")
+  securityLogsAsTarget UserSecurityLog[] @relation("SecurityLogTarget")
+
+  authoredNews               News[]                   @relation("NewsAuthor")
+  deletedNews                News[]                   @relation("NewsDeletedBy")
+  createdNewsRevisions       NewsRevision[]           @relation("NewsRevisionCreator")
+  reviewedNewsRevisions      NewsRevision[]           @relation("NewsRevisionReviewer")
+  createdNewsCategories      NewsCategory[]           @relation("NewsCategoryCreator")
+  createdFiles               FileAsset[]              @relation("FileCreator")
+}
