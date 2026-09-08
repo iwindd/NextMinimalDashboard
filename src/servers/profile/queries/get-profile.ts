@@ -1,15 +1,16 @@
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import { PROFILE_SELECT, toProfile } from "../helpers";
+import type { Profile } from "../types";
 
-export async function getProfile() {
+export async function getProfile(): Promise<Profile | null> {
   const session = await auth();
-  if (!session?.user?.id) return null;
+  if (!session?.user) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: PROFILE_SELECT,
-  });
-
-  return user ? toProfile(user) : null;
+  return {
+    id: session.user.id,
+    name: session.user.name ?? "",
+    email: session.user.email,
+    role: session.user.role,
+    createdAt: session.user.createdAt,
+    updatedAt: session.user.updatedAt,
+  };
 }

@@ -1,19 +1,34 @@
-import { prisma } from "@/lib/prisma";
-import { getUserDetailSchema } from "./get-user-detail-schema";
-import { requireManageUsers } from "../authorization";
-import { USER_DETAIL_SELECT, toUserDetail } from "../helpers";
+import { apiServerFetch } from "@/lib/api-server";
+import type { UserDetail } from "../types";
+
+type ApiUser = {
+  id: string;
+  githubLogin: string;
+  name: string | null;
+  role: "ADMIN" | "USER";
+  accessStatus: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+function toUser(user: ApiUser): UserDetail {
+  return {
+    id: user.id,
+    name: user.name ?? user.githubLogin,
+    email: user.githubLogin,
+    role: user.role === "ADMIN" ? "ADMIN" : "EDITOR",
+    isActive: user.isActive && user.accessStatus !== "SUSPENDED",
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
+}
 
 export async function getUserDetail(userId: string) {
-  await requireManageUsers();
-
-  if (!getUserDetailSchema.safeParse({ userId }).success) {
+  try {
+    const result = await apiServerFetch<{ user: ApiUser }>(`admin/users/${encodeURIComponent(userId)}`);
+    return toUser(result.user);
+  } catch {
     return null;
   }
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: USER_DETAIL_SELECT,
-  });
-
-  return user ? toUserDetail(user) : null;
 }

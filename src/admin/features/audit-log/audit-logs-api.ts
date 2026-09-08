@@ -12,19 +12,16 @@ export type AuditLogScopeArg =
 
 function getAuditLogListUrl(scope: AuditLogScopeArg) {
   if (scope.kind === "user") {
-    return `api/admin/users/${encodeURIComponent(scope.userId)}/audit-logs`;
+    return `audit-logs/users/${encodeURIComponent(scope.userId)}`;
   }
 
-  return scope.kind === "own"
-    ? "api/admin/profile/audit-logs"
-    : "api/admin/audit-logs";
+  return scope.kind === "own" ? "audit-logs/me" : "audit-logs";
 }
 
 export function getAuditLogExportUrl(scope: AuditLogScopeArg, id: string) {
-  const base =
-    scope.kind === "own" ? "/api/admin/profile/audit-logs" : "/api/admin/audit-logs";
+  const base = scope.kind === "own" ? "audit-logs/me" : "audit-logs";
 
-  return `${base}/${encodeURIComponent(id)}/export`;
+  return `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5050"}/api/v1/${base}/${encodeURIComponent(id)}/export`;
 }
 
 /** Multi-value filters travel as comma-separated lists. */
@@ -42,7 +39,11 @@ function toRequestParams(query: AuditLogListQuery) {
 
 export const auditLogsApi = createApi({
   reducerPath: "auditLogsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/", cache: "no-store" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5050"}/api/v1/`,
+    credentials: "include",
+    cache: "no-store",
+  }),
   tagTypes: ["AuditLogs"],
   refetchOnMountOrArgChange: true,
   refetchOnFocus: true,

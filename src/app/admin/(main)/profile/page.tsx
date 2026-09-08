@@ -1,16 +1,17 @@
 "use client";
 
-import { Stack } from "@mantine/core";
-import { ProfileEmailForm } from "./components/profile-email-form";
+import { Stack, Text } from "@mantine/core";
 import { ProfileNameForm } from "./components/profile-name-form";
-import { ProfilePasswordForm } from "./components/profile-password-form";
+import { useProfile } from "./components/profile-context";
 
 export default function ProfilePage() {
+  const { profile } = useProfile();
   return (
     <Stack gap="lg">
       <ProfileNameForm />
-      <ProfileEmailForm />
-      <ProfilePasswordForm />
+      <Text size="sm" c="dimmed">
+        GitHub: {profile.email ?? "เชื่อมต่อผ่านบัญชี GitHub"} · บทบาท: {profile.role}
+      </Text>
     </Stack>
   );
 }

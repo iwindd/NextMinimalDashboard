@@ -1,10 +1,8 @@
-import type { UserRole } from "@prisma/client";
-
 export type Profile = {
   id: string;
   name: string;
-  email: string;
-  role: UserRole;
+  email: string | null;
+  role: "ADMIN" | "EDITOR";
   createdAt: string;
   updatedAt: string;
 };

@@ -1,6 +1,5 @@
 import {
   IconHistory,
-  IconLayoutDashboard,
   IconUsers,
   type TablerIcon
 } from '@tabler/icons-react'
@@ -69,16 +68,6 @@ function routeItem(
 }
 
 export const adminNavigation: AdminNavigationGroup[] = [
-  {
-    id: 'overview',
-    label: 'ภาพรวม',
-    items: [
-      routeItem('dashboard', {
-        icon: IconLayoutDashboard,
-        permissionKey: 'viewDashboard'
-      })
-    ]
-  },
   {
     id: 'system',
     label: 'ระบบ',

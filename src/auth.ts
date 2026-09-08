@@ -7,6 +7,8 @@ type ApiPrincipal = {
   role: "ADMIN" | "USER";
   isActive: boolean;
   accessStatus: "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED";
+  createdAt: string;
+  updatedAt: string;
 };
 
 type ApiSessionResponse = { user: ApiPrincipal };
@@ -41,6 +43,8 @@ export async function auth() {
       name: user.name ?? user.githubLogin,
       email: null,
       role: user.role === "ADMIN" ? "ADMIN" : "EDITOR",
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     },
   } as const;
 }

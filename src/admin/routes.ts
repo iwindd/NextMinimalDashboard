@@ -11,11 +11,6 @@ const adminRoutes = ROUTER({
       }
     }
   },
-  dashboard: {
-    path: '/admin',
-    label: 'แดชบอร์ด',
-    permission: 'viewDashboard'
-  },
   login: {
     path: '/admin/login',
     label: 'เข้าสู่ระบบ'

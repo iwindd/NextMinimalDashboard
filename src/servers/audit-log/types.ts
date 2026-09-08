@@ -1,9 +1,3 @@
-import type {
-  AuditAction,
-  AuditResourceType,
-  Prisma,
-  UserRole,
-} from "@prisma/client";
 import type { infer as ZodInfer } from "zod";
 import type { listAuditLogsSchema } from "./queries/get-audit-log-list-schema";
 
@@ -18,10 +12,10 @@ export type AuditLogUserSummary = {
 export type AuditLogListItem = {
   id: string;
   createdAt: string;
-  action: AuditAction;
-  resourceType: AuditResourceType;
+  action: string;
+  resourceType: string;
   resourceId: string | null;
-  actorRole: UserRole | null;
+  actorRole: "ADMIN" | "USER" | "EDITOR" | null;
   actor: AuditLogUserSummary | null;
   target: AuditLogUserSummary | null;
   reason: string | null;
@@ -38,7 +32,7 @@ export type AuditLogExportUser = {
   id: string;
   email: string;
   name: string;
-  role: UserRole;
+  role: "ADMIN" | "EDITOR";
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -47,14 +41,14 @@ export type AuditLogExportUser = {
 type AuditLogExportRow = {
   id: string;
   actorUserId: string | null;
-  actorRole: UserRole | null;
-  action: AuditAction;
-  resourceType: AuditResourceType;
+  actorRole: "ADMIN" | "USER" | "EDITOR" | null;
+  action: string;
+  resourceType: string;
   resourceId: string | null;
   targetUserId: string | null;
-  before: Prisma.JsonValue | null;
-  after: Prisma.JsonValue | null;
-  metadata: Prisma.JsonValue | null;
+  before: unknown;
+  after: unknown;
+  metadata: unknown;
   reason: string | null;
   requestId: string | null;
   ipHash: string | null;
