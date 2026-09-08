@@ -11,11 +11,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Commands
 
 - This is one npm package; use `npm ci` with the committed `package-lock.json`.
-- Create `.env` from `.env.example`; both `DATABASE_URL` (PostgreSQL) and `AUTH_SECRET` are required for the database/auth flows.
-- `npm run dev` and `npm start` use port `3006`, not Next.js's default port.
+- Admin has no database or authentication implementation of its own. Configure `NEXT_PUBLIC_API_URL` to point at `apps/api`.
+- `npm run dev` and `npm start` use port `5051`.
 - Verification has no test suite: for admin work, `npm run lint` and `npm run typecheck` must pass; run `npm run build` for route/configuration changes.
 - `npm run lint` intentionally checks only `src/admin/**/*.{ts,tsx}`, `src/app/admin/**/*.{ts,tsx}`, `src/servers/**/*.{ts,tsx}`, `src/hooks/**/*.{ts,tsx}`, and `src/lib/**/*.{ts,tsx}` for now. Public `(web)` lint is out of scope until its pre-existing errors (`no-explicit-any`, `react-hooks/set-state-in-effect`, and others) are addressed. Do not report a full-repository lint as passing based on the admin-only command.
-- For a schema migration use `npm run db:migrate -- --name <migration_name>`; use `npm run db:generate` when only the generated Prisma client needs refreshing.
+- Database migrations and seeds belong to `apps/api`; do not add Prisma or database access to this package.
 
 ## Admin Verification
 
@@ -38,8 +38,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Status pages: `src/app/(web)/not-found.tsx` and `src/app/(web)/error.tsx` render the public 404/500 inside the public layout. Unmatched URLs and root-layout failures are handled by `src/app/global-not-found.tsx` (requires `experimental.globalNotFound`) and `src/app/global-error.tsx`; because there is no single root layout, those two files must render their own `<html>`/`<body>`, fonts and styles. All four share `src/components/StatusScreen.tsx`. `global-error.tsx` is shared with the admin app, so keep it free of public-site branding.
 - The public root uses `LayoutScaler`, `SiteNav`, `SiteFoot`, the frontend Mantine provider/theme, and `src/app/(web)/globals.css`. The admin root uses its own Mantine provider/theme, Redux, and admin CSS modules; keep the frontend and admin UI systems separate.
 - The live application is `src/`. `html/` is a disconnected static prototype/reference, and `docs/ADMIN_REQUIREMENTS.md` is a target-state draft with stale current-state claims; trust executable source and `prisma/schema.prisma` over both.
-- Public pages are dynamic Server Components that query Prisma directly through `src/lib/prisma.ts`. The only route handler currently implemented is `/api/auth/[...nextauth]`.
-- Browser-served assets belong in `public/`. The tracked `uploads/` directory has no route or source references and is not web-accessible by itself.
+- The admin app is a UI client for the NestJS API. It has no `src/app/api`, Server Actions, Prisma client, or direct database access.
+- Browser-served assets belong in `public/`.
 - The current Prisma model keeps categories/regions and `News.publishedDate`/`Knowledge.publishedDate` as display strings. The normalized taxonomy and `DateTime` model in the requirements document has not been implemented.
 
 ## Database Safety

@@ -1,11 +1,10 @@
 import {
   IconHistory,
   IconLayoutDashboard,
-  IconNews,
   IconUsers,
   type TablerIcon
 } from '@tabler/icons-react'
-import { NOTIFICATION_KEYS, type NotificationKey } from './notifications'
+import type { NotificationKey } from './notifications'
 import type { PermissionKey, PermissionMode } from './permissions'
 import { getRoute } from './routes'
 
@@ -77,18 +76,6 @@ export const adminNavigation: AdminNavigationGroup[] = [
       routeItem('dashboard', {
         icon: IconLayoutDashboard,
         permissionKey: 'viewDashboard'
-      })
-    ]
-  },
-  {
-    id: 'content',
-    label: 'จัดการเนื้อหา',
-    permissionKey: 'manageContent',
-    items: [
-      routeItem('content.news', {
-        icon: IconNews,
-        notification: NOTIFICATION_KEYS.news,
-        permissionKey: 'manageContent'
       })
     ]
   },

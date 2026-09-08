@@ -4,8 +4,6 @@ import layoutReducer from "./features/layout/layout-slice";
 import { ADMIN_LAYOUT_SETTINGS_KEY } from "./constants";
 import { auditLogsApi } from "./features/audit-log/audit-logs-api";
 import { usersApi } from "./features/user/users-api";
-import { newsApi } from "./features/news/news-api";
-import { notificationsApi } from "./features/notifications/notifications-api";
 
 export type PreloadedState = { auth: AuthState };
 
@@ -16,8 +14,6 @@ export function makeStore(preloadedState: PreloadedState) {
       layout: layoutReducer,
       [usersApi.reducerPath]: usersApi.reducer,
       [auditLogsApi.reducerPath]: auditLogsApi.reducer,
-      [newsApi.reducerPath]: newsApi.reducer,
-      [notificationsApi.reducerPath]: notificationsApi.reducer,
     },
     preloadedState: {
       auth: preloadedState.auth,
@@ -26,8 +22,6 @@ export function makeStore(preloadedState: PreloadedState) {
       getDefaultMiddleware().concat(
         usersApi.middleware,
         auditLogsApi.middleware,
-        newsApi.middleware,
-        notificationsApi.middleware,
       ),
   });
 

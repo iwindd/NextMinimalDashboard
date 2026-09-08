@@ -102,7 +102,6 @@ type StatusScreenProps = {
 }
 
 const DEFAULT_LINKS: StatusScreenLink[] = [
-  { label: 'ข่าวสาร', description: 'ความเคลื่อนไหวล่าสุด', href: '/news' }
 ]
 
 const WATERMARK_TEXT = 'ARDA ARDA ARDA\nARDA ARDA ARDA'

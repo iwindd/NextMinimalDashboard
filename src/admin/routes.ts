@@ -20,26 +20,6 @@ const adminRoutes = ROUTER({
     path: '/admin/login',
     label: 'เข้าสู่ระบบ'
   },
-  content: {
-    path: '/admin/content',
-    label: 'จัดการเนื้อหา',
-    hiddenBreadcrumb: true,
-    permission: 'manageContent',
-    children: {
-      news: {
-        path: '/admin/news',
-        label: 'ข่าวสาร',
-        permission: 'manageContent',
-        children: {
-          detail: {
-            path: '/admin/news/:newsId',
-            label: 'รายละเอียดข่าวสาร',
-            permission: 'manageContent'
-          }
-        }
-      }
-    }
-  },
   system: {
     path: '/admin/system',
     label: 'ระบบ',

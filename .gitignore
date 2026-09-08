@@ -15,11 +15,6 @@ dist/
 !.env.example
 !.env*.example
 
-# Prisma local/generated files
-prisma/*.db
-prisma/*.db-journal
-prisma/generated/
-
 # Logs
 *.log
 npm-debug.log*
