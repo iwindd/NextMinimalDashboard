@@ -16,9 +16,9 @@ import {
   Tooltip
 } from '@mantine/core'
 import { IconLogout, IconSettings, IconUserCircle } from '@tabler/icons-react'
-import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { AdminBrand } from './admin-brand'
 import classes from './admin-header.module.css'
 
@@ -36,19 +36,21 @@ export function AdminHeader({
   showBrand: boolean
 }) {
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const { resetAllAdminApiCaches } = useAdminCacheInvalidation()
   const t = useTranslations('Navigation')
   const common = useTranslations('Common')
   const displayName = user.name || user.email || common('admin')
 
   const handleLogout = async () => {
-    const result = await signOut({
-      redirect: false,
-      redirectTo: '/admin/login'
+    const apiOrigin = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5050'
+    await fetch(`${apiOrigin}/api/v1/auth/logout`, {
+      method: 'POST',
+      credentials: 'include'
     })
     dispatch(setUser(null))
     resetAllAdminApiCaches()
-    window.location.assign(result.url || '/admin/login')
+    router.push('/admin/login')
   }
 
   return (
